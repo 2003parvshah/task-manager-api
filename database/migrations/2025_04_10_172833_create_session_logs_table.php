@@ -11,8 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
+        // database/migrations/xxxx_create_session_logs_table.php
         Schema::create('session_logs', function (Blueprint $table) {
             $table->id();
+            $table->string('user_id');
+            $table->string('event'); // login/register/logout
+            $table->string('ip_address')->nullable();
+            $table->text('user_agent')->nullable();
             $table->timestamps();
         });
     }

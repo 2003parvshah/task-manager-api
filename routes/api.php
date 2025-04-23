@@ -1,10 +1,15 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
+
 use App\Http\Controllers\Api\AuthController;
-use Illuminate\Routing\Route;
 
 Route::get('demo', function () {
     return "hello";
+});
+
+Route::get('/test-route', function () {
+    return 'API route is working!';
 });
 
 Route::post('/register', [AuthController::class, 'register']);

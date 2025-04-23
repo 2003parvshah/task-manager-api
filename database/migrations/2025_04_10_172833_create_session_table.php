@@ -13,12 +13,12 @@ return new class extends Migration
     {
         // database/migrations/xxxx_create_session_logs_table.php
         Schema::create('sessions', function (Blueprint $table) {
-            $table->id();
-            $table->string('user_id');
-            $table->string('event'); // login/register/logout
-            $table->string('ip_address')->nullable();
+            $table->string('id')->primary();
+            $table->foreignId('user_id')->nullable()->index();
+            $table->string('ip_address', 45)->nullable();
             $table->text('user_agent')->nullable();
-            $table->timestamps();
+            $table->text('payload');
+            $table->integer('last_activity')->index();
         });
     }
 

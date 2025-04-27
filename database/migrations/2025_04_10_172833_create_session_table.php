@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        // database/migrations/xxxx_create_session_logs_table.php
+        // database/migrations/xxxx_create_sessions_logs_table.php
         Schema::create('sessions', function (Blueprint $table) {
             $table->string('id')->primary();
             $table->foreignId('user_id')->nullable()->index();

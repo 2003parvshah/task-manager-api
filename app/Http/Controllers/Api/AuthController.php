@@ -14,18 +14,16 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use JWTAuth;
 use Tymon\JWTAuth\Facades\JWTAuth as FacadesJWTAuth;
+use App\Http\Requests\RegisterRequest;
+
 
 class AuthController extends Controller
 {
-    public function register(Request $request)
+    public function register(RegisterRequest $request)
     {
         Log::info("in register fucntion");
 
-        $request->validate([
-            'email' => 'required|email|unique:users',
-            'password' => 'required|min:6',
-            'role' => 'required|in:manager,employee',
-        ]);
+
 
         $user = User::create([
             'id' => Str::uuid()->toString(),
@@ -33,6 +31,7 @@ class AuthController extends Controller
             'password' => Hash::make($request->password),
             'role' => $request->role,
         ]);
+        Log::info($user);
 
         $this->logSession($user->id, 'register', $request);
 

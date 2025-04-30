@@ -45,20 +45,41 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
+        // Validate request inputs
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required|string|min:6',
+        ]);
+
         $credentials = $request->only('email', 'password');
 
-        // if (!$token = auth()->attempt($credentials)) {
-        return response()->json(['error' => 'Invalid Credentials'], 401);
-        // }
+        Log::info('Login attempt', ['email' => $credentials['email']]);
 
-        // $user = auth()->user();
+        // Attempt authentication
+        if (!$token = FacadesJWTAuth::attempt($credentials)) {
+            Log::warning('Login failed for email: ' . $credentials['email']);
+            return response()->json(['error' => 'Invalid credentials'], 401);
+        }
+
+        // Get authenticated user
+        $user = FacadesJWTAuth::user();
+
+        // Log session
         $this->logSession($user->id, 'login', $request);
 
         return response()->json([
             'message' => 'Login successful',
-            'token' => $token
+            'token' => $token,
+            'user' => [
+                'id' => $user->id,
+                'email' => $user->email,
+                'role' => $user->role,
+            ],
         ]);
     }
+
+
+
 
     public function logout()
     {
